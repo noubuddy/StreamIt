@@ -96,7 +96,6 @@ int __cdecl main(int argc, char **argv)
         return 1;
     }
 
-    printf("Bytes Sent: %ld\n", iResult);
 
     // shutdown the connection since no more data will be sent
     iResult = shutdown(ConnectSocket, SD_SEND);
@@ -124,5 +123,6 @@ int __cdecl main(int argc, char **argv)
     closesocket(ConnectSocket);
     WSACleanup();
 
+    getchar();
     return 0;
 }
