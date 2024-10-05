@@ -4,6 +4,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StreamIt-Client", "StreamIt
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StreamIt-Server", "StreamIt-Server\StreamIt-Server.vcxproj", "{0E7DB6EE-316A-4545-A3A6-8254F41C529B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StreamIt", "StreamIt\StreamIt.vcxproj", "{41EE3486-B46D-4112-930A-2E2D16B16470}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -28,5 +30,13 @@ Global
 		{0E7DB6EE-316A-4545-A3A6-8254F41C529B}.Release|Win32.Build.0 = Release|Win32
 		{0E7DB6EE-316A-4545-A3A6-8254F41C529B}.Release|x64.ActiveCfg = Release|x64
 		{0E7DB6EE-316A-4545-A3A6-8254F41C529B}.Release|x64.Build.0 = Release|x64
+		{41EE3486-B46D-4112-930A-2E2D16B16470}.Debug|Win32.ActiveCfg = Debug|Win32
+		{41EE3486-B46D-4112-930A-2E2D16B16470}.Debug|Win32.Build.0 = Debug|Win32
+		{41EE3486-B46D-4112-930A-2E2D16B16470}.Debug|x64.ActiveCfg = Debug|x64
+		{41EE3486-B46D-4112-930A-2E2D16B16470}.Debug|x64.Build.0 = Debug|x64
+		{41EE3486-B46D-4112-930A-2E2D16B16470}.Release|Win32.ActiveCfg = Release|Win32
+		{41EE3486-B46D-4112-930A-2E2D16B16470}.Release|Win32.Build.0 = Release|Win32
+		{41EE3486-B46D-4112-930A-2E2D16B16470}.Release|x64.ActiveCfg = Release|x64
+		{41EE3486-B46D-4112-930A-2E2D16B16470}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 EndGlobal

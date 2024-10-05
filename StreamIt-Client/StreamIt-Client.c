@@ -5,6 +5,7 @@
 #include <ws2tcpip.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "../StreamIt/StreamIt.h"
 
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
 #pragma comment (lib, "Ws2_32.lib")
@@ -12,11 +13,14 @@
 #pragma comment (lib, "AdvApi32.lib")
 
 #define DEFAULT_BUFLEN 512
-#define SERVER_ADDR 127.0.0.1
+#define SERVER_ADDR "127.0.0.1"
 #define DEFAULT_PORT "27015"
 
 int __cdecl main(int argc, char **argv) 
 {
+    printf("This is server!\n");
+
+    // initialize variables
     WSADATA wsaData;
     SOCKET ConnectSocket = INVALID_SOCKET;
     struct addrinfo *result = NULL,
@@ -27,29 +31,20 @@ int __cdecl main(int argc, char **argv)
     int iResult;
     int recvbuflen = DEFAULT_BUFLEN;
     
-    // Validate the parameters
-    // if (argc != 2) {
-    //     printf("usage: %s server-name\n", argv[0]);
-    //     return 1;
-    // }
-
-    // Initialize Winsock
+    // initialize Winsock
     iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
     if (iResult != 0) {
         printf("WSAStartup failed with error: %d\n", iResult);
         return 1;
     }
 
-    ZeroMemory( &hints, sizeof(hints) );
+    memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_protocol = IPPROTO_TCP;
-
-    // const char* serv_addr = 'SERVER_ADDR';
-    const PCSTR serv_addr = "127.0.0.1";
-
+    
     // Resolve the server address and port
-    iResult = getaddrinfo(serv_addr, DEFAULT_PORT, &hints, &result);
+    iResult = getaddrinfo(SERVER_ADDR, DEFAULT_PORT, &hints, &result);
     if ( iResult != 0 ) {
         printf("getaddrinfo failed with error: %d\n", iResult);
         WSACleanup();
@@ -82,7 +77,7 @@ int __cdecl main(int argc, char **argv)
 
     if (ConnectSocket == INVALID_SOCKET) {
         printf("Unable to connect to server!\n");
-        printf("Server address: %s", serv_addr);
+        printf("Server address: %s", SERVER_ADDR);
         WSACleanup();
         return 1;
     }

@@ -7,16 +7,16 @@
 #include <ws2tcpip.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-// Need to link with Ws2_32.lib
-#pragma comment (lib, "Ws2_32.lib")
-// #pragma comment (lib, "Mswsock.lib")
+#include "../StreamIt/StreamIt.h"
 
 #define DEFAULT_BUFLEN 512
+#define SERVER_ADDR "127.0.0.1"
 #define DEFAULT_PORT "27015"
 
 int __cdecl main(void) 
 {
+    printf("This is client!\n");
+    
     WSADATA wsaData;
     int iResult;
 
@@ -43,10 +43,8 @@ int __cdecl main(void)
     hints.ai_protocol = IPPROTO_TCP;
     hints.ai_flags = AI_PASSIVE;
 
-    const PCSTR serv_addr = "127.0.0.1";
-
     // Resolve the server address and port
-    iResult = getaddrinfo(serv_addr, DEFAULT_PORT, &hints, &result);
+    iResult = getaddrinfo(SERVER_ADDR, DEFAULT_PORT, &hints, &result);
     if ( iResult != 0 ) {
         printf("getaddrinfo failed with error: %d\n", iResult);
         WSACleanup();
