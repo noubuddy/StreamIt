@@ -162,7 +162,7 @@
     <ClInclude Include="StreamIt.h" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="PlatformSpecific\" />
+    <Folder Include="PlatformSpecific\Windows\" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,7 +5,6 @@
 #include <ws2tcpip.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "../StreamIt/StreamIt.h"
 
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
 #pragma comment (lib, "Ws2_32.lib")
@@ -18,7 +17,7 @@
 
 int __cdecl main(int argc, char **argv) 
 {
-    printf("This is server!\n");
+    printf("This is client!\n");
 
     // initialize variables
     WSADATA wsaData;
