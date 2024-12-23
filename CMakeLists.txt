@@ -16,7 +16,7 @@ else()
 endif()
 
 # Define configuration types
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release;Development" CACHE STRING "" FORCE)
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
 
 # Define architecture and set default if not provided
 if(NOT CMAKE_VS_PLATFORM_NAME)
@@ -38,12 +38,12 @@ add_library(StreamItLib STATIC ${LIBRARY_SOURCES})
 source_group(TREE ${SRC_DIR} PREFIX "StreamItLib" FILES ${LIBRARY_SOURCES})
 
 # Configure example projects
-set(CLIENT_MAIN "${EXAMPLES_DIR}/client-win64/main.c")
-set(SERVER_MAIN "${EXAMPLES_DIR}/server-win64/main.c")
+set(CLIENT_WIN64 "${EXAMPLES_DIR}/client-win64/main.c")
+set(SERVER_WIN64 "${EXAMPLES_DIR}/server-win64/main.c")
 
-if(EXISTS ${CLIENT_MAIN})
+if(EXISTS ${CLIENT_WIN64})
     file(GLOB_RECURSE CLIENT_SOURCES "${EXAMPLES_DIR}/client-win64/*.c" "${EXAMPLES_DIR}/client-win64/*.h")
-    add_executable(ClientWin64 ${CLIENT_MAIN} ${CLIENT_SOURCES})
+    add_executable(ClientWin64 ${CLIENT_WIN64} ${CLIENT_SOURCES})
     target_link_libraries(ClientWin64 PRIVATE StreamItLib)
     set_target_properties(ClientWin64 PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/client"
@@ -54,9 +54,9 @@ if(EXISTS ${CLIENT_MAIN})
     source_group(TREE ${EXAMPLES_DIR}/client-win64 PREFIX "Client-Win64" FILES ${CLIENT_SOURCES})
 endif()
 
-if(EXISTS ${SERVER_MAIN})
+if(EXISTS ${SERVER_WIN64})
     file(GLOB_RECURSE SERVER_SOURCES "${EXAMPLES_DIR}/server-win64/*.c" "${EXAMPLES_DIR}/server-win64/*.h")
-    add_executable(ServerWin64 ${SERVER_MAIN} ${SERVER_SOURCES})
+    add_executable(ServerWin64 ${SERVER_WIN64} ${SERVER_SOURCES})
     target_link_libraries(ServerWin64 PRIVATE StreamItLib)
     set_target_properties(ServerWin64 PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/server"
