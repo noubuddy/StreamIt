@@ -117,6 +117,5 @@ int __cdecl main(int argc, char **argv)
     closesocket(ConnectSocket);
     WSACleanup();
 
-    getchar();
     return 0;
 }
