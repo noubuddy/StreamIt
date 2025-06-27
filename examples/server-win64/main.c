@@ -6,18 +6,19 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <stdlib.h>
-#include <stdio.h>
+
+#include "streamit.h"
 
 #pragma comment (lib, "Ws2_32.lib")
 
 #define DEFAULT_BUFLEN 512
 #define SERVER_ADDR "127.0.0.1"
-#define DEFAULT_PORT "27015"
+#define DEFAULT_PORT "9999"
 
 int __cdecl main(void) 
 {
-    printf("This is server!\n");
-    
+    LOG_DEBUG("This is server!")
+
     WSADATA wsaData;
     int iResult;
 
@@ -30,15 +31,16 @@ int __cdecl main(void)
     int iSendResult;
     char recvbuf[DEFAULT_BUFLEN];
     int recvbuflen = DEFAULT_BUFLEN;
-    
-    // Initialize Winsock
-    iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
-    if (iResult != 0) {
-        printf("WSAStartup failed with error: %d\n", iResult);
-        return 1;
-    }
 
-    ZeroMemory(&hints, sizeof(hints));
+    // Initialize Winsock
+    // iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
+    // if (iResult != 0) {
+    //     printf("WSAStartup failed with error: %d\n", iResult);
+    //     return 1;
+    // }
+    e_result init_result = init_sockets();
+
+    wipemem(&hints, sizeof(hints));
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_protocol = IPPROTO_TCP;

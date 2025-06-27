@@ -1,10 +1,12 @@
-cmake_minimum_required(VERSION 3.31.0 FATAL_ERROR)
-
+cmake_minimum_required(VERSION 3.16)
 project(StreamIt C CXX)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+### Set C standard
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+###
 
-# Platform-specific macros
+### Platform-specific macros
 if(WIN32)
     add_compile_definitions(PLATFORM_WINDOWS)
 elseif(UNIX AND NOT APPLE)
@@ -14,58 +16,48 @@ elseif(APPLE)
 else()
     message(FATAL_ERROR "Unsupported platform!")
 endif()
+###
 
-# Define configuration types
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
-
-# Define architecture and set default if not provided
-if(NOT CMAKE_VS_PLATFORM_NAME)
-    set(CMAKE_VS_PLATFORM_NAME "x64")
-endif()
-message(STATUS "${CMAKE_VS_PLATFORM_NAME} architecture in use")
-
-if(NOT ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64" OR "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86"))
-    message(FATAL_ERROR "${CMAKE_VS_PLATFORM_NAME} architecture is not supported!")
-endif()
-
-# Source directories
-set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
-set(EXAMPLES_DIR "${CMAKE_SOURCE_DIR}/examples")
-
-# Configure a static library
-file(GLOB_RECURSE LIBRARY_SOURCES "${SRC_DIR}/*.c" "${SRC_DIR}/*.h")
-add_library(StreamItLib STATIC ${LIBRARY_SOURCES})
-source_group(TREE ${SRC_DIR} PREFIX "StreamItLib" FILES ${LIBRARY_SOURCES})
-
-# Configure example projects
-set(CLIENT_WIN64 "${EXAMPLES_DIR}/client-win64/main.c")
-set(SERVER_WIN64 "${EXAMPLES_DIR}/server-win64/main.c")
-
-if(EXISTS ${CLIENT_WIN64})
-    file(GLOB_RECURSE CLIENT_SOURCES "${EXAMPLES_DIR}/client-win64/*.c" "${EXAMPLES_DIR}/client-win64/*.h")
-    add_executable(ClientWin64 ${CLIENT_WIN64} ${CLIENT_SOURCES})
-    target_link_libraries(ClientWin64 PRIVATE StreamItLib)
-    set_target_properties(ClientWin64 PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/client"
-        RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin/client/Debug"
-        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/bin/client/Release"
-        VS_DEBUGGER_WORKING_DIRECTORY "${EXAMPLES_DIR}/client-win64"
-    )
-    source_group(TREE ${EXAMPLES_DIR}/client-win64 PREFIX "Client-Win64" FILES ${CLIENT_SOURCES})
-endif()
-
-if(EXISTS ${SERVER_WIN64})
-    file(GLOB_RECURSE SERVER_SOURCES "${EXAMPLES_DIR}/server-win64/*.c" "${EXAMPLES_DIR}/server-win64/*.h")
-    add_executable(ServerWin64 ${SERVER_WIN64} ${SERVER_SOURCES})
-    target_link_libraries(ServerWin64 PRIVATE StreamItLib)
-    set_target_properties(ServerWin64 PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/server"
-        RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin/server/Debug"
-        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/bin/server/Release"
-        VS_DEBUGGER_WORKING_DIRECTORY "${EXAMPLES_DIR}/server-win64"
-    )
-    source_group(TREE ${EXAMPLES_DIR}/server-win64 PREFIX "Server-Win64" FILES ${SERVER_SOURCES})
-endif()
-
-# Use solution folders
+### Use solution folders
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+###
+
+### Define directories
+set(INCLUDES_DIRECTORY "${PROJECT_SOURCE_DIR}/include")
+set(SOURCE_DIRECTORY "${PROJECT_SOURCE_DIR}/src")
+set(EXAMPLES_DIRECTORY "${CMAKE_SOURCE_DIR}/examples")
+###
+
+### Add include directories
+include_directories(${INCLUDES_DIRECTORY})
+###
+
+### Collect source files
+file(GLOB_RECURSE PROJECT_HEADERS
+        "${INCLUDES_DIRECTORY}/*.h"
+)
+
+file(GLOB_RECURSE PROJECT_SOURCES
+        "${SOURCE_DIRECTORY}/*.c"
+        "${SOURCE_DIRECTORY}/*.inl"
+)
+###
+
+### Create static library
+add_library(${PROJECT_NAME} STATIC
+        ${PROJECT_HEADERS}
+        ${PROJECT_SOURCES}
+)
+###
+
+### Set include directories for the target
+target_include_directories(${PROJECT_NAME}
+        PUBLIC
+        ${INCLUDES_DIRECTORY}
+)
+###
+
+### Sub-projects
+add_subdirectory(examples/client-win64)
+add_subdirectory(examples/server-win64)
+###

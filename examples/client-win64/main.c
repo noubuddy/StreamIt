@@ -4,7 +4,8 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <stdlib.h>
-#include <stdio.h>
+
+#include "streamit.h"
 
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
 #pragma comment (lib, "Ws2_32.lib")
@@ -13,7 +14,7 @@
 
 #define DEFAULT_BUFLEN 512
 #define SERVER_ADDR "127.0.0.1"
-#define DEFAULT_PORT "27015"
+#define DEFAULT_PORT "9999"
 
 int __cdecl main(int argc, char **argv) 
 {
@@ -37,7 +38,7 @@ int __cdecl main(int argc, char **argv)
         return 1;
     }
 
-    memset(&hints, 0, sizeof(hints));
+    wipemem(&hints, sizeof(hints));
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_protocol = IPPROTO_TCP;
